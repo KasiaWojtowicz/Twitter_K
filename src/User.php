@@ -77,6 +77,26 @@ class User
         }
 
     }
+    
+    static public function loadUserById(PDO $pdo, $id){
+    
+    $stmt = $pdo->prepare('SELECT * FROM Users WHERE id=:id');
+    $result = $stmt->execute(['id' => $id]);
+
+    if ($result === true && $stmt->rowCount() > 0) {
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $loadedUser = new User();
+        $loadedUser->id = $row['id'];
+        $loadedUser->username = $row['username'];
+        $loadedUser->hashPassword = $row['hash_password'];
+        $loadedUser->email = $row['email'];
+        return $loadedUser;
+    }
+return null;
+}
+
+    
+    
 }
 
 
